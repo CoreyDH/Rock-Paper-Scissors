@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>GIPHY API DEMO</title>
+  <title>Rok Papah Scissahs</title>
   <link rel="stylesheet" href="assets/css/reset.css">
   <link rel="stylesheet" href="https://bootswatch.com/cosmo/bootstrap.min.css">
   <link rel="stylesheet" href="assets/css/style.css">
@@ -12,12 +12,97 @@
 <body>
   <main class="container">
     <div class="row">
+      <h1 class="text-center">Rok Papah Scissahs</h1>
       <div class="col-md-12">
+        <div class="rps-join text-center">
+          <div class="form-group">
+            <div class="form-inline">
+              <input type="text" id="rps-name" class="form-control" placeholder="Your Name">
+              <a href="#" id="rps-join" class="btn btn-success rps-join-game">Join Game</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Player 1 -->
+      <div class="col-md-4">
+        <div class="text-center rps-waiting">Waiting for Player</div>
+        <table id="p1-table" class="table">
+          <tr>
+            <td colspan="3" class="col-xs-12 text-center">
+              <h2 id="p1-display"></h2>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="3" class="col-xs-12">
+              <div id="p1-final" class="text-center"></div>
+            </td>
+          </tr>
+          <tr class="rps-options text-center">
+            <td class="col-xs-4"><a href="#" id="p1-rock">Rock</a></td>
+            <td class="col-xs-4"><a href="#" id="p1-paper">Paper</a></td>
+            <td class="col-xs-4"><a href="#" id="p1-scissors">Scissors</a></td>
+          </tr>
+          <tr>
+            <td colspan="3" class="text-center">
+              <a class="btn btn-primary">Lock in</a>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- Result -->
+      <div class="col-md-4">
+
+      </div>
+
+      <!-- Player 2 -->
+      <div class="col-md-4">
+        <div class="text-center rps-waiting">Waiting for Player</div>
+        <table id="p2-table" class="table">
+          <tr>
+            <td colspan="3" class="col-xs-12 text-center">
+              <h2 id="p2-display"></h2>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="3" class="col-xs-12">
+              <div id="p2-final" class="text-center"></div>
+            </td>
+          </tr>
+          <tr class="rps-options text-center">
+            <td class="col-xs-4"><a href="#" id="p2-rock">Rock</a></td>
+            <td class="col-xs-4"><a href="#" id="p2-paper">Paper</a></td>
+            <td class="col-xs-4"><a href="#" id="p2-scissors">Scissors</a></td>
+          </tr>
+          <tr>
+            <td colspan="3" class="text-center">
+              <a class="btn btn-primary">Lock in</a>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+    </div>
+
+    <div class="row">
+
+      <!-- Chat -->
+      <div class="col-md-12">
+        <div class="form-group">
+          <textarea name="" id="" class="form-control" cols="30" rows="10"></textarea>
+          <div class="form-inline">
+            <input type="text" class="form-control">
+            <a href="#" class="btn btn-success">Send</a>
+          </div>
+        </div>
+
       </div>
     </div>
   </main>
 </body>
 <script src="assets/vendor/jquery/jquery-3.1.0.min.js"></script>
 <script src="assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/3.3.2/firebase.js"></script>
 <script src="assets/js/scripts.js"></script>
 </html>
