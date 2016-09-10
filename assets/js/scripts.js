@@ -14,98 +14,107 @@
     var fb = firebase.database().ref();
     var playerDB = firebase.database().ref('players');
     var playerArrKeys = [];
-    var uid;
+    var numPlayers = 2;
+    var local = [];
+    var dbLength = 0;
 
-    firebase.auth().signInAnonymously().then(function(user) {
+    // playerDB.on('value', function(snapshot) {
+    //
+    //   var dataObj = snapshot.val();
+    //
+    //   if(dataObj) {
+    //     // if(playerArrKeys.length !== Object.keys(dataObj).length) {
+    //     //   playerArrKeys = Object.keys(dataObj);
+    //     // }
+    //     dbLength = Object.keys(dataObj).length;
+    //     if(Object.keys(dataObj).length === 2) {
+    //       $('.rps-join').hide();
+    //     }
+    //   }
+    //
+    // });
 
-      uid = user.uid;
-      console.log(uid);
-      localStorage.setItem('uid', uid);
-
-    });
-
-    playerDB.on('value', function(snapshot) {
-
-      console.log('player event hit');
-      var dataObj = snapshot.val();
-
-      if(dataObj === null) {
-        addPlayers('players');
-      }
-
-      if(playerArrKeys.length !== Object.keys(dataObj).length) {
-        playerArrKeys = Object.keys(dataObj);
-      }
-
-      checkSeating(dataObj);
-
-    });
-
-    playerDB.on('child_changed', function(snapshot) {
-
-      console.log('player-child event hit');
+    playerDB.on('child_added', function(snapshot) {
 
       var player = snapshot.val();
-
+      sessionStorage.setItem('name', player.name);
+      sessionStorage.setItem('key', snapshot.key);
+      fillSeat(player);
 
     }, function(e) {
       console.log('error '+ e);
     });
 
-    function checkSeating(player) {
+    playerDB.on('child_removed', function(snapshot) {
+      console.log(snapshot);
+      var player = snapshot.val();
+      vacateSeat(player.id);
 
-      for(var i=0; i < Object.keys(player).length; i++) {
+    }, function(e) {
+      console.log('error '+ e);
+    });
 
-        var playa = player[playerArrKeys[i]];
-
-        
-
-        // if(playa.seated) {
-        //
-        //   // console.log(playa)
-        //   $('.rps-join').eq(playa.id - 1).hide();
-        //
-        //   $('#p' + playa.id + '-display').text(playa.name);
-        //
-        //   $('#p' + playa.id + '-table').show();
-        //
-        // } else {
-        //
-        //   $('#p' + playa.id + '-join').val('').show();
-        //   $('#p'+ playa.id +'-table').hide();
-        //
-        // }
-      }
+    function fillSeat(player) {
+      console.log(player);
+      $('#p'+ player.id +'-waiting').hide();
+      $('#p' + player.id + '-display').text(player.name);
+      $('#p' + player.id + '-table').show();
     }
 
-    function addPlayers(ref) {
-
-      for(var i = 1; i <= 2; i++) {
-
-        fb.ref(ref).push({
-
-          name: '',
-          id: i,
-          wins: 0,
-          losses: 0,
-          seated: false,
-          ready: 0
-
-        });
-
-      }
-
+    function vacateSeat(playerId) {
+      $('#p'+ player.id +'-waiting').show();
+      $('#p' + player.id + '-display').text('');
+      $('#p' + player.id + '-table').hide();
     }
 
-    $('.rps-join-game').on('click', function(event) {
+    function addPlayer(name, index) {
+      playerDB.push({
+        name: name,
+        id: index,
+        choice: '',
+        wins: 0,
+        losses: 0,
+        ready: false
+      });
+    }
 
-      var name = $(event.target).siblings('input').val().trim();
+    function getPlayerKeys(callback) {
+      playerDB.once('value', function(snapshot) {
+
+        var len = 0;
+        if(snapshot.val()) {
+          len = Object.keys(snapshot.val()).length;
+        }
+
+        len++;
+
+        callback(len);
+
+      });
+    }
+
+    $('.rps-join-game').on('click', function() {
+      console.log('hit kesdfsdys');
+      var name = $('#rps-name').val().trim();
 
       if(name) {
-        playerDB.child(playerArrKeys[id]).update({ name: name, seated: true });
+        getPlayerKeys(function(keyLength) {
+          console.log(keyLength);
+          addPlayer(name, keyLength);
+        });
+        $('.rps-join').hide();
       }
 
     });
+
+    // When user leaves
+    window.onbeforeunload = function () {
+
+      var key = sessionStorage.getItem('key', key);
+      playerDB.child(key).remove();
+      sessionStorage.clear();
+
+    };
 
     // var rps = {
     //
